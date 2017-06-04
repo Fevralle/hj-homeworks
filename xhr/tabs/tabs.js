@@ -39,7 +39,7 @@ function showContent(event, request, removeActive, addActive) {
   removeActive.classList.remove("active");
   addActive.classList.add("active");
 
-  request.open('GET', addActive.href, true);
+  request.open('GET', addActive.href);
   request.send();
 }
 

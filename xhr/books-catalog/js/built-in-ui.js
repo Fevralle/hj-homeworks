@@ -30,7 +30,7 @@ document.getElementById('content').addEventListener('click', (event) => {
 const list = document.getElementById('content');
 
 const catalog = new XMLHttpRequest();
-catalog.open('GET', 'https://netology-fbb-store-api.herokuapp.com/book/');
+catalog.open('GET', 'https://netology-fbb-store-api.herokuapp.com/book'); //'https://netology-fbb-store-api.herokuapp.com/book/
 catalog.send();
 
 catalog.addEventListener("load", onLoadContent);
@@ -59,5 +59,7 @@ function onLoadContent() {
 
       list.appendChild(newLi);
     });
+  } else {
+    list.innerHTML = `<li>Ответ ${this.status}: ${this.statusText}</li>`;
   }
 }

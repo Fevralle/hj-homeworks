@@ -27,15 +27,15 @@ document.getElementById('content').addEventListener('click', (event) => {
     }
 });
 
-let books;
-let newLi;
-let list = document.getElementById('content');
+const list = document.getElementById('content');
 
-let catalog = new XMLHttpRequest();
-catalog.open('GET', 'https://netology-fbb-store-api.herokuapp.com/book/', true);
+const catalog = new XMLHttpRequest();
+catalog.open('GET', 'https://netology-fbb-store-api.herokuapp.com/book/');
 catalog.send();
 
 catalog.addEventListener("load", onLoadContent);
+
+let books, newLi;
 
 function onLoadContent() {
   if (this.status === 200) {
@@ -44,10 +44,17 @@ function onLoadContent() {
     books.forEach(v => {
       newLi = document.createElement("li");
 
-      newLi.dataset.title = v.title;
-      newLi.dataset.author = v.author.name;
-      newLi.dataset.info = v.reviews[0].cite;
-      newLi.dataset.price= v.price;
+      // что-то туго с деструктуризацией: не могу додуматься, как добраться до info и autor, потому что это все информация из вложенных объектов вложенных объектов...
+      const {title, price} = v;
+
+      for (let prop in {title, price}) {
+        newLi.dataset[prop] = {title, price}[prop];
+      }
+
+      //newLi.dataset.title = v.title;
+      //newLi.dataset.author = v.author.name;
+      //newLi.dataset.info = v.reviews[0].cite;
+      //newLi.dataset.price= v.price;
       newLi.innerHTML = `<img src="${v.cover.small}">`;
 
       list.appendChild(newLi);

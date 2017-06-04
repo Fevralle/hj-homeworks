@@ -1,54 +1,49 @@
-let emailContent = new XMLHttpRequest();
-let smsContent = new XMLHttpRequest();
+const emailRequest = new XMLHttpRequest();
+const smsRequest = new XMLHttpRequest();
 
-let anchors = document.getElementsByTagName('a');
-let pressEmail = anchors[0];
-let pressSms = anchors[1];
-
-let preloader = document.getElementById('preloader');
+const preloader = document.getElementById('preloader');
 
 function onLoadStart() {
   preloader.classList.remove("hidden");
 }
+
 function onLoadEnd() {
   preloader.classList.add("hidden");
 }
 
-let content = document.getElementById('content');
+const content = document.getElementById('content');
 
 function onLoadContent() {
   if (this.status === 200) {
     content.innerHTML = `${this.responseText}`;
+  } else {
+    content.innerHTML = `<p>Ответ ${this.status}: ${this.statusText}</p>`;
   }
 }
 
-[emailContent, smsContent].forEach(v => {
+[emailRequest, smsRequest].forEach(v => {
   v.addEventListener("loadstart", onLoadStart);
   v.addEventListener("loadend", onLoadEnd);
   v.addEventListener("load", onLoadContent);
 });
 
-emailContent.open('GET', pressEmail.href, true);
-emailContent.send();
+const anchors = document.getElementsByTagName('a');
+const pressEmail = anchors[0];
+const pressSms = anchors[1];
 
-pressEmail.addEventListener("click", onClickEmail);
-function onClickEmail(event) {
-  event.preventDefault();
+function showContent(event, request, removeActive, addActive) {
+  if (event) {
+    event.preventDefault();
+  }
 
-  pressSms.classList.remove("active");
-  this.classList.add("active");
+  removeActive.classList.remove("active");
+  addActive.classList.add("active");
 
-  emailContent.open('GET', this.href, true);
-  emailContent.send();
+  request.open('GET', addActive.href, true);
+  request.send();
 }
 
-pressSms.addEventListener("click", onClickSms);
-function onClickSms(event) {
-  event.preventDefault();
+showContent(null, emailRequest, pressSms, pressEmail);
 
-  pressEmail.classList.remove("active");
-  this.classList.add("active");
-
-  smsContent.open('GET', this.href, true);
-  smsContent.send();
-}
+pressEmail.addEventListener("click", () => {showContent(event, emailRequest, pressSms, pressEmail)});
+pressSms.addEventListener("click", () => {showContent(event, smsRequest, pressEmail, pressSms)});

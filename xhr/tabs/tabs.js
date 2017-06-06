@@ -1,6 +1,3 @@
-const emailRequest = new XMLHttpRequest();
-const smsRequest = new XMLHttpRequest();
-
 const preloader = document.getElementById('preloader');
 
 function onLoadStart() {
@@ -20,13 +17,6 @@ function onLoadContent() {
     content.innerHTML = `<p>Ответ ${this.status}: ${this.statusText}</p>`;
   }
 }
-
-
-[emailRequest, smsRequest].forEach(v => {
-  v.addEventListener("loadstart", onLoadStart);
-  v.addEventListener("loadend", onLoadEnd);
-  v.addEventListener("load", onLoadContent);
-});
 
 const anchors = Array.from(document.getElementsByTagName('a'));
 const pressEmail = anchors[0];

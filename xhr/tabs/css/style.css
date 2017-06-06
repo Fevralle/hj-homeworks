@@ -136,14 +136,13 @@ input[type="submit"]:hover {
   background-color: blue;
   opacity: 0.8;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  padding-top: 120px;
 }
 
 
 .hidden {
-  visibility: hidden;
+  display: none;
 }
 
 .active {

@@ -21,29 +21,39 @@ function onLoadContent() {
   }
 }
 
+
 [emailRequest, smsRequest].forEach(v => {
   v.addEventListener("loadstart", onLoadStart);
   v.addEventListener("loadend", onLoadEnd);
   v.addEventListener("load", onLoadContent);
 });
 
-const anchors = document.getElementsByTagName('a');
+const anchors = Array.from(document.getElementsByTagName('a'));
 const pressEmail = anchors[0];
 const pressSms = anchors[1];
 
-function showContent(event, request, removeActive, addActive) {
+function showContent(event = null) {
+  anchors.forEach(v => v.classList.remove("active"));
+  let target;
+
   if (event) {
     event.preventDefault();
+    target = event.target;
+  } else {
+    target = pressEmail;
   }
 
-  removeActive.classList.remove("active");
-  addActive.classList.add("active");
+  target.classList.add("active");
 
-  request.open('GET', addActive.href);
+  const request = new XMLHttpRequest();
+  request.addEventListener("loadstart", onLoadStart);
+  request.addEventListener("loadend", onLoadEnd);
+  request.addEventListener("load", onLoadContent);
+  request.open('GET', target.href);
   request.send();
 }
 
-showContent(null, emailRequest, pressSms, pressEmail);
+showContent();
 
-pressEmail.addEventListener("click", () => {showContent(event, emailRequest, pressSms, pressEmail)});
-pressSms.addEventListener("click", () => {showContent(event, smsRequest, pressEmail, pressSms)});
+pressEmail.addEventListener("click", () => showContent(event));
+pressSms.addEventListener("click", () => showContent(event));

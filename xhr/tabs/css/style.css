@@ -14,6 +14,7 @@ body {
 }
 
 .tabs {
+  border: 1px solid black;
   width: 450px;
   min-height: 350px;
   margin: 0 auto;
@@ -121,13 +122,28 @@ input[type="submit"]:hover {
   transition: 0.4s;
 }
 
-#preloader {
-  padding: 10px;
-  background-color: #f9f9f9;
+.content-wrapper {
+  position: relative;
 }
 
+#preloader {
+  position: absolute;
+  top: 0px;
+  width: 396px;
+  height: 244px;
+
+  padding: 10px;
+  background-color: blue;
+  opacity: 0.8;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
 .hidden {
-  display: none;
+  visibility: hidden;
 }
 
 .active {
